@@ -3,11 +3,17 @@ package com.study.springstudy.springmvc.chap03.controller;
 import com.study.springstudy.springmvc.chap03.dto.ScorePostDto;
 import com.study.springstudy.springmvc.chap03.entity.Score;
 import com.study.springstudy.springmvc.chap03.repository.ScoreJdbcRepository;
+import com.study.springstudy.springmvc.chap03.repository.ScoreMemoryRepository;
+import com.study.springstudy.springmvc.chap03.repository.ScoreRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,23 +26,30 @@ import java.util.List;
     - /score/register : POST
 
     3. 성적정보 삭제 요청
-    - /score/remove : POST
+    - /score/remove : GET
 
     4. 성적정보 상세 조회 요청
     - /score/detail : GET
  */
 @Controller
 @RequestMapping("/score")
+@RequiredArgsConstructor
 public class ScoreController {
 
     // 의존객체 설정
-    private ScoreJdbcRepository repository = new ScoreJdbcRepository();
+    private final ScoreRepository repository;
+
+//    @Autowired // 하나뿐이라 생략 가능
+//    public ScoreController(ScoreRepository repository) {
+//        this.repository = repository;
+//    }
 
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(@RequestParam(defaultValue = "num") String sort, Model model) {
         System.out.println("/score/list : GET!");
 
-        List<Score> scoreList = repository.findAll();
+        List<Score> scoreList = repository.findAll(sort);
+
         model.addAttribute("sList", scoreList);
 
         return "/score/score-list";
@@ -56,16 +69,30 @@ public class ScoreController {
         return "redirect:/score/list";
     }
 
-    @PostMapping("/remove")
-    public String remove() {
+    @GetMapping("/remove")
+    public String remove(@RequestParam("sn") long stuNum) {
         System.out.println("/score/remove : POST!");
-        return "";
+
+        repository.delete(stuNum);
+        return "redirect:/score/list";
     }
 
     @GetMapping("/detail")
-    public String detail() {
+    public String detail(long stuNum, Model model) {
         System.out.println("/score/detail : GET!");
-        return "";
+
+        // 1. 상세조회를 원하는 학번을 읽기
+        // 2. DB에 상세조회 요청
+        Score score = repository.findOne(stuNum);
+        // 3. DB에서 조회한회원정보 JSP에게 전달
+        model.addAttribute("s", score);
+        // 4. rank 조회
+        int[] result = repository.findRankByStuNum(stuNum);
+//        System.out.println("rank = " + rank);
+        model.addAttribute("rank", result[0]);
+        model.addAttribute("count", result[1]);
+
+        return "score/score-detail";
     }
 
 }
