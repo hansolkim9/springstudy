@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+//@Repository
 public class ScoreJdbcRepository implements ScoreRepository {
 
     private String url = "jdbc:mariadb://localhost:3306/spring5";
