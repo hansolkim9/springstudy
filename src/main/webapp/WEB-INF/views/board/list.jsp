@@ -38,11 +38,11 @@
                 <div class="card-wrapper">
                     <section class="card" data-bno="${b.boardNo}">
                         <div class="card-title-wrapper">
-                            <h2 class="card-title">${b.title}</h2>
+                            <h2 class="card-title">${b.truncateTitle()}</h2>
                             <div class="time-view-wrapper">
                                 <div class="time">
                                     <i class="far fa-clock"></i>
-                                    ${b.regDateTime}
+                                    ${b.getRegDateTimeFormatted()}
                                 </div>
                                 <div class="view">
                                     <i class="fas fa-eye"></i>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="card-content">
 
-                            ${b.content}
+                            ${b.truncateContent()}
 
                         </div>
                     </section>

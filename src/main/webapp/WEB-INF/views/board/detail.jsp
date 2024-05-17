@@ -111,7 +111,7 @@
 
     <div id="wrap" class="form-container">
         <h1>${b.boardNo}번 게시물 내용~ </h1>
-        <h2># 작성일자: ${b.regDateTime}</h2>
+        <h2># 작성일자: ${b.getRegDateTimeFormatted()}</h2>
         <label for="title">제목</label>
         <input type="text" id="title" name="title" value="${b.title}" readonly>
         <label for="content">내용</label>

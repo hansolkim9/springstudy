@@ -6,6 +6,7 @@ import lombok.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 /*
@@ -45,5 +46,24 @@ public class Board {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.writer = dto.getWriter();
+    }
+
+    public String getRegDateTimeFormatted() {
+        // LocalDateTime 객체를 "yyyy-MM-dd HH:mm" 형식으로 변환하여 문자열로 반환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return regDateTime.format(formatter);
+    }
+
+    public String truncateTitle() {
+        if (title.length() > 7) {
+            return title.substring(0, 7) + "...";
+        }
+        return title;
+    }
+    public String truncateContent() {
+        if (content.length() > 30) {
+            return content.substring(0, 30) + "...";
+        }
+        return content;
     }
 }
