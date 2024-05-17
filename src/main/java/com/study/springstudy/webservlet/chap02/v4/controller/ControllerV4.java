@@ -1,6 +1,6 @@
 package com.study.springstudy.webservlet.chap02.v4.controller;
 
-import com.study.springstudy.webservlet.Model;
+import com.study.springstudy.webservlet.MyModel;
 
 import java.util.Map;
 
@@ -12,5 +12,5 @@ public interface ControllerV4 {
      * @param2 model : 응답시 보여줄 JSP에 보낼 데이터를 담는 수송객체
      * @return - 응답시 포워딩 하거나 리다이렉트할 경로 '문자열'
      */
-    String process(Map<String, String> paramMap, Model model);
+    String process(Map<String, String> paramMap, MyModel model);
 }

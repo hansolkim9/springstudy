@@ -20,5 +20,6 @@
     <a href="chap02/v4/join">회원가입하기(front v4)</a> <br>
     <a href="chap02/v5/join">회원가입하기(front v5)</a> <br>
     <a href="score/list">성적 정보 관리 시스템</a> <br>
+    <a href="board/list">꾸러기 게시판</a> <br>
 </body>
 </html>
