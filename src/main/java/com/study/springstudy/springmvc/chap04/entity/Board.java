@@ -48,22 +48,23 @@ public class Board {
         this.writer = dto.getWriter();
     }
 
-    public String getRegDateTimeFormatted() {
-        // LocalDateTime 객체를 "yyyy-MM-dd HH:mm" 형식으로 변환하여 문자열로 반환
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return regDateTime.format(formatter);
-    }
 
-    public String truncateTitle() {
-        if (title.length() > 7) {
-            return title.substring(0, 7) + "...";
-        }
-        return title;
-    }
-    public String truncateContent() {
-        if (content.length() > 30) {
-            return content.substring(0, 30) + "...";
-        }
-        return content;
-    }
+    // 엔터티는 DB와 소통 - 민감한 정보를 담고 있기 때문에 화면에 보여줄 땐 (클라이언트와 소통할 땐) dto 사용하는게 좋다.
+//    public String getRegDateTimeFormatted() {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        return regDateTime.format(formatter);
+//    }
+//
+//    public String truncateTitle() {
+//        if (title.length() > 7) {
+//            return title.substring(0, 7) + "...";
+//        }
+//        return title;
+//    }
+//    public String truncateContent() {
+//        if (content.length() > 30) {
+//            return content.substring(0, 30) + "...";
+//        }
+//        return content;
+//    }
 }
