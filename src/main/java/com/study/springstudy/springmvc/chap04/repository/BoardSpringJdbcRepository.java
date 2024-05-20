@@ -22,10 +22,9 @@ public class BoardSpringJdbcRepository implements BoardRepository {
     @Override
     public Board findOne(int boardNo) {
         String sql = "SELECT * FROM tbl_board WHERE board_no = ?";
-        String update = "UPDATE tbl_board SET view_count = view_count + 1 WHERE board_no = ?";
-
         Board board = template.queryForObject(sql, (rs, rowNum) -> new Board(rs), boardNo);
-
+        // 게시물 상세 조회 시 조회수 +1 시키기
+        String update = "UPDATE tbl_board SET view_count = view_count + 1 WHERE board_no = ?";
         template.update(update, boardNo);
 
         return board;
