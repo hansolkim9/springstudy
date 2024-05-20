@@ -76,6 +76,7 @@ public class BoardController {
     @GetMapping("/detail")
     public String read(int bno, Model model) {
         Board b = repository.findOne(bno);
+        if (b != null) repository.upViewCount(bno);
         model.addAttribute("b", new BoardDetailResponseDto(b));
         return "board/detail";
     }

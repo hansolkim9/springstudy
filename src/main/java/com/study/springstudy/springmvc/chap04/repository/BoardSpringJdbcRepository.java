@@ -23,10 +23,6 @@ public class BoardSpringJdbcRepository implements BoardRepository {
     public Board findOne(int boardNo) {
         String sql = "SELECT * FROM tbl_board WHERE board_no = ?";
         Board board = template.queryForObject(sql, (rs, rowNum) -> new Board(rs), boardNo);
-        // 게시물 상세 조회 시 조회수 +1 시키기
-        String update = "UPDATE tbl_board SET view_count = view_count + 1 WHERE board_no = ?";
-        template.update(update, boardNo);
-
         return board;
     }
 
@@ -40,5 +36,11 @@ public class BoardSpringJdbcRepository implements BoardRepository {
     public boolean delete(int boardNo) {
         String sql = "DELETE FROM tbl_board WHERE board_no = ?";
         return template.update(sql, boardNo) == 1;
+    }
+
+    @Override
+    public void upViewCount(int boardNo) {
+        String update = "UPDATE tbl_board SET view_count = view_count + 1 WHERE board_no = ?";
+        template.update(update, boardNo);
     }
 }
