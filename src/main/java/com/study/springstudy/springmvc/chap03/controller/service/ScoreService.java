@@ -8,10 +8,9 @@ package com.study.springstudy.springmvc.chap03.controller.service;
     Controller -> Service -> Repository
  */
 
-import com.study.springstudy.springmvc.chap03.dto.ScoreDetailResponseDto;
-import com.study.springstudy.springmvc.chap03.dto.ScoreListResponseDto;
-import com.study.springstudy.springmvc.chap03.dto.ScorePostDto;
+import com.study.springstudy.springmvc.chap03.dto.*;
 import com.study.springstudy.springmvc.chap03.entity.Score;
+import com.study.springstudy.springmvc.chap03.mapper.ScoreMapper;
 import com.study.springstudy.springmvc.chap03.repository.ScoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,8 @@ import java.util.stream.Collectors;
 @Service
 public class ScoreService {
 
-    private final ScoreRepository repository;
+//    private final ScoreRepository repository;
+    private final ScoreMapper repository;
 
     // 목록 조회 중간 처리
     // - DB에서 조회한 성적정보 목록은 민감한 정보를 모두 포함하고 있는데
@@ -50,11 +50,16 @@ public class ScoreService {
     public ScoreDetailResponseDto retrieve(long stuNum) {
 
         Score score = repository.findOne(stuNum);
-        int[] result = repository.findRankByStuNum(stuNum);
+        RankDto result = repository.findRankByStuNum(stuNum);
 
-        ScoreDetailResponseDto dto = new ScoreDetailResponseDto(score, result[0], result[1]);
+        ScoreDetailResponseDto dto = new ScoreDetailResponseDto(score, result.getRank(), result.getCnt());
 
         return dto;
     }
 
+    // 수정 완료를 위해 서비스클래스에서 dto를 entity로 변환
+    public void update(ScoreModifyRequestDto dto) {
+
+        repository.updateScore(new Score(dto));
+    }
 }

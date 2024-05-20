@@ -1,11 +1,14 @@
-package com.study.springstudy.springmvc.chap03.repository;
+package com.study.springstudy.springmvc.chap03.mapper;
 
+import com.study.springstudy.springmvc.chap03.dto.RankDto;
+import com.study.springstudy.springmvc.chap03.dto.ScoreDetailResponseDto;
 import com.study.springstudy.springmvc.chap03.entity.Score;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-// 역할: 적당한 저장소에 CRUD하기
-public interface ScoreRepository {
+@Mapper
+public interface ScoreMapper {
 
     // 저장소에 데이터 추가하기
     boolean save(Score score);
@@ -17,16 +20,12 @@ public interface ScoreRepository {
     Score findOne(long stuNum);
 
     // 저장소에서 데이터 삭제하기
-    default boolean delete(long stuNum) {
-        return false;
-    }
+    boolean delete(long stuNum);
 
     // 저장소에서 등수, 전체인원 조회하기
-    int[] findRankByStuNum(long stuNum);
+    RankDto findRankByStuNum(long stuNum);
 
     // 저장소에서 국영수 점수 수정하기
-    default boolean updateScore(Score s) {
-        return false;
-    }
+    boolean updateScore(Score s);
 
 }
