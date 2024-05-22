@@ -30,17 +30,6 @@ class BoardMapperTest {
     }
     
     @Test
-    @DisplayName("전체조회")
-    void findAllTest() {
-        //given
-        
-        //when
-        List<Board> all = mapper.findAll();
-        //then
-        System.out.println("all = " + all);
-    }
-
-    @Test
     @DisplayName("상세조회")
     void findOneTest() {
         //given
