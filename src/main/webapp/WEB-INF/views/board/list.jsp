@@ -98,6 +98,12 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-lg pagination-custom">
 
+                    <c:if test="${maker.pageInfo.pageNo != 1}">
+                    <li class="page-item">
+                        <a class="page-link" href="/board/list?pageNo=1"><<</a>
+                    </li>
+                    </c:if>
+
                     <c:if test="${maker.prev}">
                         <li class="page-item">
                             <a class="page-link" href="/board/list?pageNo=${maker.begin - 1}">prev</a>
@@ -114,6 +120,12 @@
                         <li class="page-item">
                             <a class="page-link" href="/board/list?pageNo=${maker.end + 1}">next</a>
                         </li>
+                    </c:if>
+
+                    <c:if test="${maker.pageInfo.pageNo != maker.finalPage}">
+                    <li class="page-item">
+                        <a class="page-link" href="/board/list?pageNo=${maker.finalPage}">>></a>
+                    </li>
                     </c:if>
 
                     </li>
@@ -234,6 +246,11 @@
             window.location.href = '/board/write';
         };
 
+        <%--document.querySelector("[data-page-num='${maker.pageInfo.pageNo}']").classList.add('active');--%>
+
+        const currentPage = ${maker.pageInfo.pageNo};
+        const $li = document.querySelector(`li[data-page-num="\${currentPage}"]`);
+        $li.classList.add('active');
 
 
     </script>
