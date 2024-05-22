@@ -15,6 +15,19 @@ class BoardMapperTest {
 
     @Autowired
     private BoardMapper mapper;
+
+    @Test
+    @DisplayName("")
+    void insertTest() {
+        for (int i = 1; i <= 300; i++) {
+            Board b = new Board();
+            b.setTitle("테스트제목"+i);
+            b.setWriter("테스트작성자"+i);
+            b.setContent("내용"+i);
+
+            mapper.save(b);
+        }
+    }
     
     @Test
     @DisplayName("전체조회")
