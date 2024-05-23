@@ -52,13 +52,13 @@
                 <form action="/board/list" method="get">
 
                     <select class="form-select" name="type" id="search-type">
-                        <option value="title" selected>제목</option>
+                        <option value="title">제목</option>
                         <option value="content">내용</option>
                         <option value="writer">작성자</option>
                         <option value="tc">제목+내용</option>
                     </select>
 
-                    <input type="text" class="form-control" name="keyword">
+                    <input type="text" class="form-control" name="keyword" value="${s.keyword}">
 
                     <button class="btn btn-primary" type="submit">
                         <i class="fas fa-search"></i>
@@ -76,45 +76,53 @@
 
         <div class="card-container">
 
-            <c:forEach var="b" items="${bList}">
-                <div class="card-wrapper">
-                    <section class="card" data-bno="${b.boardNo}">
-                        <div class="card-title-wrapper">
-                            <h2 class="card-title">${b.shortTitle}</h2>
-                            <div class="time-view-wrapper">
-                                <div class="time">
-                                    <i class="far fa-clock"></i>
-                                    ${b.date}
-                                </div>
+            <c:if test="${bList.size() == 0}">
+                <div class="empty">
+                    게시물이 존재하지 않습니다.
+                </div>
+            </c:if>
 
-                                <c:if test="${b.hit}">
-                                <div class="hit">HIT</div>
-                                </c:if>
+            <c:if test="${bList.size() > 0}">
+                <c:forEach var="b" items="${bList}">
+                    <div class="card-wrapper">
+                        <section class="card" data-bno="${b.boardNo}">
+                            <div class="card-title-wrapper">
+                                <h2 class="card-title">${b.shortTitle}</h2>
+                                <div class="time-view-wrapper">
+                                    <div class="time">
+                                        <i class="far fa-clock"></i>
+                                        ${b.date}
+                                    </div>
 
-                                <c:if test="${b.newArticle}">
-                                    <div class="new">NEW!</div>
-                                </c:if>
+                                    <c:if test="${b.hit}">
+                                    <div class="hit">HIT</div>
+                                    </c:if>
 
-                                <div class="view">
-                                    <i class="fas fa-eye"></i>
-                                    <span class="view-count">${b.view}</span>
+                                    <c:if test="${b.newArticle}">
+                                        <div class="new">NEW!</div>
+                                    </c:if>
+
+                                    <div class="view">
+                                        <i class="fas fa-eye"></i>
+                                        <span class="view-count">${b.view}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-content">
+                            <div class="card-content">
 
-                            ${b.shortContent}
+                                ${b.shortContent}
 
+                            </div>
+                        </section>
+                        <div class="card-btn-group">
+                            <button class="del-btn" data-href="/board/delete?bno=${b.boardNo}">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
-                    </section>
-                    <div class="card-btn-group">
-                        <button class="del-btn" data-href="/board/delete?bno=${b.boardNo}">
-                            <i class="fas fa-times"></i>
-                        </button>
                     </div>
-                </div>
-                <%-- .end card-wrapper --%>
-            </c:forEach>
+                    <%-- .end card-wrapper --%>
+                </c:forEach>
+            </c:if>
 
 
         </div>
@@ -277,10 +285,29 @@
 
         <%--document.querySelector("[data-page-num='${maker.pageInfo.pageNo}']").classList.add('active');--%>
 
-        const currentPage = ${maker.pageInfo.pageNo};
-        const $li = document.querySelector(`li[data-page-num="\${currentPage}"]`);
-        $li.classList.add('active');
+        function appendActivePage () {
+            const currentPage = ${maker.pageInfo.pageNo};
+            const $li = document.querySelector(`li[data-page-num="\${currentPage}"]`);
+            $li?.classList.add('active');
+        }
 
+        // 기존 검색 조건 option태그 고정하기
+        function fixSearchOption() {
+
+            // 1. 어떤 조건을 검색했는지 값을 알아 옴
+            const type = '${s.type}';
+            // console.log('type: ' + type)
+
+            // 2. 해당 조건을 가진 option 태그를 검색
+            const $option = document.querySelector(`#search-type option[value='\${type}']`);
+
+            // 3. 해당 태그에 selected 속성 부여
+            $option?.setAttribute('selected', 'selected')
+
+        }
+
+        appendActivePage();
+        fixSearchOption();
 
     </script>
 
