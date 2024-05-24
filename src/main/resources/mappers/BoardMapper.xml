@@ -34,7 +34,7 @@
             B.view_count,
             COUNT(R.reply_no) AS reply_count
         FROM tbl_board B
-        JOIN tbl_reply R
+        LEFT OUTER JOIN tbl_reply R
         ON B.board_no = R.board_no
         <include refid="search" />
         GROUP BY B.board_no
