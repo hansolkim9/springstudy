@@ -6,9 +6,14 @@ import com.study.springstudy.springmvc.chap05.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/replies")
@@ -41,14 +46,41 @@ public class ReplyApiController {
     // 댓글 생성 요청
     // @RequestBody : 클라이언트가 전송한 데이터를 JSON으로 받아서 파싱
     @PostMapping
-    public ResponseEntity<?> posts(@RequestBody ReplyPostDto dto) {
+    public ResponseEntity<?> posts(
+            @Validated @RequestBody ReplyPostDto dto
+            , BindingResult result // 입력값 검증 결과 데이터를 갖고 있는 객체
+    ) {
+
         log.info("/api/v1/replies : POST");
         log.debug("parameter: {}", dto);
+
+        if (result.hasErrors()) {
+
+            Map<String, String> errors = makeValidationMessageMap(result);
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(result.getAllErrors());
+        }
+
         boolean flag = replyService.register(dto);
 
         if (!flag) return ResponseEntity.internalServerError().body("댓글 등록 실패");
 
         return ResponseEntity.ok().body(replyService.getReplies(dto.getBno()));
+    }
+
+    private Map<String, String> makeValidationMessageMap(BindingResult result) {
+
+        Map<String, String> errors = new HashMap<>();
+
+        // 에러 정보가 모여있는 리스트
+        List<FieldError> fieldErrors = result.getFieldErrors();
+        for (FieldError error : fieldErrors) {
+            errors.put(error.getField(), error.getDefaultMessage());
+        }
+
+        return errors;
     }
 
 }
