@@ -33,17 +33,27 @@ function getRelativeTime(createAt) {
 }
 
 
-function renderPage({ begin, end }) {
+function renderPage({ begin, end, pageInfo }) {
     let tag = '';
 
+    // 이전 페이지 버튼 추가
+    if (pageInfo.pageNo > begin) {
+        tag += `<li class='page-item'><a class='page-link page-custom' href='${pageInfo.pageNo - 1}'>Prev</a></li>`;
+    }
     // 페이지 번호 태그 만들기
     for (let i = begin; i <= end; i++) {
         tag += `<li class='page-item'><a class='page-link page-custom' href='${i}'>${i}</a></li>`;
+    }
+    // 다음 페이지 버튼 추가
+    if (pageInfo.pageNo < end) {
+        tag += `<li class='page-item'><a class='page-link page-custom' href='${pageInfo.pageNo + 1}'>Next</a></li>`;
     }
 
     // 페이지 태그에 ul 붙이기
     const $pageUl = document.querySelector('.pagination');
     $pageUl.innerHTML = tag;
+
+    $pageUl.querySelector(`.page-link[href = "${pageInfo.pageNo}"]`).parentElement.classList.add('p-active');
 }
 
 export function renderReplies({ pageInfo, replies }) {
