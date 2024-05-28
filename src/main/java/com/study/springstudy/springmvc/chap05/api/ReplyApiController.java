@@ -39,7 +39,7 @@ public class ReplyApiController {
         log.info("/api/v1/replise/{} : GET", bno);
 
         List<ReplyDetailDto> replies = replyService.getReplies(bno);
-        log.debug("first reply : {}", replies.get(0));
+//        log.debug("first reply : {}", replies.get(0));
 
         return ResponseEntity.ok().body(replies);
     }

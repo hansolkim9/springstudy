@@ -39,10 +39,10 @@ public class BoardService {
         Board board = boardMapper.findOne(boardNo);
 
         // 댓글 목록 조회
-        List<Reply> replies = replyMapper.findAll(boardNo);
+//        List<Reply> replies = replyMapper.findAll(boardNo);
 
         BoardDetailResponseDto responseDto = new BoardDetailResponseDto(board);
-        responseDto.setReplies(replies);
+//        responseDto.setReplies(replies);
 
         return responseDto;
     }
