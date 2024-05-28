@@ -30,7 +30,20 @@ function getRelativeTime(createAt) {
     } else {
         return `${years}년 전`;
     }
+}
 
+
+function renderPage({ begin, end }) {
+    let tag = '';
+
+    // 페이지 번호 태그 만들기
+    for (let i = begin; i <= end; i++) {
+        tag += `<li class='page-item'><a class='page-link page-custom' href='${i}'>${i}</a></li>`;
+    }
+
+    // 페이지 태그에 ul 붙이기
+    const $pageUl = document.querySelector('.pagination');
+    $pageUl.innerHTML = tag;
 }
 
 export function renderReplies({ pageInfo, replies }) {
@@ -68,8 +81,12 @@ export function renderReplies({ pageInfo, replies }) {
 
     document.getElementById('replyData').innerHTML = tag;
 
+    // 페이지 태그 렌더링
+    renderPage(pageInfo);
+
 }
 
+// 서버에서 댓글 목록 가져오는 비동기 요청 함수
 export async function fetchReplies(pageNo=1) {
 
     const bno = document.getElementById('wrap').dataset.bno; // 게시물 글번호
@@ -79,4 +96,15 @@ export async function fetchReplies(pageNo=1) {
 
     // 댓글 목록 렌더링
     renderReplies(replyResponse);
+}
+
+// 페이지 클릭 이벤트 생성 함수
+export function replyPageClickEvent() {
+
+    document.querySelector('.pagination').addEventListener('click', e => {
+        e.preventDefault();
+
+        // console.log(e.target.getAttribute('href'));
+        fetchReplies(e.target.getAttribute('href'))
+    })
 }
