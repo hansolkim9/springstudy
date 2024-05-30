@@ -28,10 +28,10 @@
         SELECT COUNT(*)
         FROM tbl_member
         <if test="type == 'account'">
-        WHERE account = ${keyword}
+        WHERE account = #{keyword}
         </if>
         <if test="type == 'email'">
-        WHERE email = ${keyword}
+        WHERE email = #{keyword}
         </if>
     </select>
 
