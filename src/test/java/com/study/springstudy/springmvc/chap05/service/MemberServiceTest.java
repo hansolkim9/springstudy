@@ -1,5 +1,6 @@
 package com.study.springstudy.springmvc.chap05.service;
 
+import com.study.springstudy.springmvc.chap05.dto.request.LoginDto;
 import com.study.springstudy.springmvc.chap05.dto.request.SignUpDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,5 +32,48 @@ class MemberServiceTest {
         //then
         assertTrue(flag);
     }
+
+    @Test
+    @DisplayName("id가 존재하지 않는 경우를 테스트한다.")
+    void noAccTest() {
+        //given
+        LoginDto dto = LoginDto.builder()
+                .account("kitty123")
+                .password("aslkfjas")
+                .build();
+        //when
+        LoginResult result = memberService.authenticate(dto);
+        //then
+        assertEquals(LoginResult.NO_ACC, result);
+    }
+
+    @Test
+    @DisplayName("pw가 틀린 경우를 테스트한다.")
+    void noPwTest() {
+        //given
+        LoginDto dto = LoginDto.builder()
+                .account("kitty")
+                .password("aslkfjas")
+                .build();
+        //when
+        LoginResult result = memberService.authenticate(dto);
+        //then
+        assertEquals(LoginResult.NO_PW, result);
+    }
+
+    @Test
+    @DisplayName("로그인 테스트가 성공하는 경우를 테스트한다.")
+    void successTest() {
+        //given
+        LoginDto dto = LoginDto.builder()
+                .account("kitty")
+                .password("kkk1234!")
+                .build();
+        //when
+        LoginResult result = memberService.authenticate(dto);
+        //then
+        assertEquals(LoginResult.SUCCESS, result);
+    }
+
 
 }
