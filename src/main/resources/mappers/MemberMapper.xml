@@ -9,7 +9,7 @@
         INSERT INTO tbl_member
             (account, password, name, email)
         VALUES
-            (#{account}, #{password], #{name}, #{email})
+            (#{account}, #{password}, #{name}, #{email})
     </insert>
 
     <select id="findOne" resultType="member">
