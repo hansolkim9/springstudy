@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,7 +27,7 @@ public class MemberController {
 
     // 회원가입 요청 처리
     @PostMapping("/sign-up")
-    public String signUp(SignUpDto dto) {
+    public String signUp(@Validated SignUpDto dto) {
         log.info("/members/sign-up POST ");
         log.debug("params: {}", dto);
 
