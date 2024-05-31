@@ -19,6 +19,7 @@ public class BoardListResponseDto {
     private boolean hit; // HIT 게시물인가? 의 여부
     private boolean newArticle;
     private int replyCount; // 댓글 수
+    private String account; //
 
     // 엔터티를 DTO로 변환하는 생성자
     public BoardListResponseDto (BoardFindAllDto b) {
@@ -31,6 +32,7 @@ public class BoardListResponseDto {
         this.hit = this.view > 5;
         this.newArticle = LocalDateTime.now().isBefore(regTime.plusMinutes(5));
         this.replyCount = b.getReplyCount();
+        this.account = b.getAccount();
     }
 
     private String dateFormatting(LocalDateTime regDateTime) {

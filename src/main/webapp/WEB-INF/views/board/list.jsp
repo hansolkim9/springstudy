@@ -99,11 +99,14 @@
 
                             </div>
                         </section>
+                        <!-- 관리자이거나 본인이 쓴 글에만 렌더링 되도록 -->
+                        <c:if test="${login.auth == 'ADMIN' || login.account == b.account}">
                         <div class="card-btn-group">
                             <button class="del-btn" data-href="/board/delete?bno=${b.boardNo}">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
+                        </c:if>
                     </div>
                     <%-- .end card-wrapper --%>
                 </c:forEach>
@@ -182,7 +185,7 @@
         const confirmDelete = document.getElementById('confirmDelete'); // 모달 삭제 확인버튼
         const cancelDelete = document.getElementById('cancelDelete'); // 모달 삭제 취소 버튼
 
-        $cardContainer.addEventListener('click', e => {
+        $cardContainer?.addEventListener('click', e => {
             // 삭제 버튼을 눌렀다면~
             if (e.target.matches('.card-btn-group *')) {
                 console.log('삭제버튼 클릭');
@@ -234,7 +237,9 @@
             $targetCard?.classList.remove('card-hover');
 
             const $delBtn = e.target.closest('.card-wrapper')?.querySelector('.del-btn');
-            $delBtn.style.opacity = '0';
+            if ($delBtn !== null) {
+                $delBtn.style.opacity = '0';
+            }
         }
 
 
@@ -247,7 +252,9 @@
             $targetCard?.classList.add('card-hover');
 
             const $delBtn = e.target.closest('.card-wrapper')?.querySelector('.del-btn');
-            $delBtn.style.opacity = '1';
+            if ($delBtn !== null) {
+                $delBtn.style.opacity = '1';
+            }
         }
 
         $cardContainer.onmousedown = e => {
