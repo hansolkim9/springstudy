@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ public class BoardController {
     // 의존객체
 //    private final BoardRepository repository;
     private final BoardService service;
+    private final HttpSession httpSession;
 
     // 1. 목록 조회 요청 (/board/list : GET)
     @GetMapping("/list")
@@ -56,10 +58,10 @@ public class BoardController {
     // 3. 게시글 등록 요청 (/board/write : POST)
     // -> 목록조회 요청 리다이렉션
     @PostMapping("/write")
-    public String register(BoardPostDto dto) {
+    public String register(BoardPostDto dto, HttpSession session) {
 //        Board board = new Board(dto);
-        Board board = dto.toEntity();
-        service.save(board);
+//        Board board = dto.toEntity();
+        service.save(dto, session);
         return "redirect:/board/list";
     }
 
