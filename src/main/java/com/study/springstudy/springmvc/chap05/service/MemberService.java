@@ -88,6 +88,12 @@ public class MemberService {
 
         }
 
+        maintainLoginState(session, foundMember);
+
+        return SUCCESS;
+    }
+
+    public static void maintainLoginState(HttpSession session, Member foundMember) {
         log.info("{}님 로그인 성공", foundMember.getName());
 
         // 세션의 수명 : 설정된 시간 OR 브라우저를 닫기 전까지
@@ -96,7 +102,6 @@ public class MemberService {
         log.debug("session time: {}", maxInactiveInterval);
 
         session.setAttribute(LOGIN , new LoginUserInfoDto(foundMember));
-        return SUCCESS;
     }
 
     // 아이디, 이메일 중복검사
