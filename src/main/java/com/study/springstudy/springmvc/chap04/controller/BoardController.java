@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,9 +73,9 @@ public class BoardController {
 
     // 5. 게시글 상세 조회 요청 (/board/detail : GET)
     @GetMapping("/detail")
-    public String read(int bno, Model model, HttpServletRequest request) {
-        BoardDetailResponseDto b = service.getBoardDetail(bno);
-        if (b != null) service.viewCount(bno);
+    public String read(int bno, Model model, HttpServletRequest request, HttpServletResponse response) {
+        BoardDetailResponseDto b = service.getBoardDetail(bno, request, response);
+//        if (b != null) service.viewCount(bno);
         model.addAttribute("b", b);
 
         // 요청 헤더를 파싱하여 이전 페이지의 주소를 얻어냄
