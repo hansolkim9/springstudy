@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-import static com.study.springstudy.springmvc.util.LoginUtil.isMins;
+import static com.study.springstudy.springmvc.util.LoginUtil.isMine;
 
 @Configuration
 @Slf4j
@@ -59,7 +59,7 @@ public class BoardInterceptor implements HandlerInterceptor {
             String loggedInUserAccount = LoginUtil.getLoggedInUserAccount(session);
 
             // 대조해보는 작업이 필요
-            if (!isMins(boardAccount, loggedInUserAccount)) {
+            if (!isMine(boardAccount, loggedInUserAccount)) {
                 response.setStatus(403);
                 response.sendRedirect("/access-deny?message=authorization");
                 return false;
