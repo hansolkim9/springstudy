@@ -28,14 +28,14 @@
             <div class="reaction-buttons">
                 <button id="like-btn">
                     <i class="fas fa-thumbs-up"></i> 좋아요
-                    <span id="like-count">0</span>
+                    <span id="like-count">${b.likeCount}</span>
                 </button>
                 <button
                         id="dislike-btn"
                         class="dislike-btn"
                 >
                     <i class="fas fa-thumbs-down"></i> 싫어요
-                    <span id="dislike-count">0</span>
+                    <span id="dislike-count">${b.dislikeCount}</span>
                 </button>
             </div>
 
@@ -152,12 +152,22 @@
 
     <script>
 
+
+        const userReaction = '${b.userReaction}';
+        updateReactionButtons(userReaction);
+
         // 서버에 좋아요, 싫어요 요청을 보내는 함수
         async function sendReaction(reactionType) {
             console.log(reactionType);
 
             const bno = document.getElementById('wrap').dataset.bno;
             const res = await fetch(`/board/\${reactionType}?bno=\${bno}`);
+
+            if (res.status === 403) {
+                const msg = await res.text();
+                alert(msg);
+                return;
+            }
 
             const { likeCount, dislikeCount, userReaction } = await res.json();
 

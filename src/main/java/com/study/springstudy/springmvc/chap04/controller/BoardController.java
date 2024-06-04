@@ -91,6 +91,11 @@ public class BoardController {
     @ResponseBody
     public ResponseEntity<?> like(long bno, HttpSession session) {
 
+        // 로그인 검증
+        if (!LoginUtil.isLoggedIn(session)) {
+            return ResponseEntity.status(403).body("로그인이 필요합니다.");
+        }
+
         String account = LoginUtil.getLoggedInUserAccount(session);
 
         ReactionDto dto = reactionService.like(bno, account);// 좋아요 요청 처리
@@ -102,6 +107,11 @@ public class BoardController {
     @GetMapping("/dislike")
     @ResponseBody
     public ResponseEntity<?> dislike(long bno, HttpSession session) {
+
+        // 로그인 검증
+        if (!LoginUtil.isLoggedIn(session)) {
+            return ResponseEntity.status(403).body("로그인이 필요합니다.");
+        }
 
         log.info("like async request!");
 

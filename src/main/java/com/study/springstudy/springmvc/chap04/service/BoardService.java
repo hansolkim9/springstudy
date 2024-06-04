@@ -7,7 +7,9 @@ import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardPostDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
+import com.study.springstudy.springmvc.chap05.entity.Reaction;
 import com.study.springstudy.springmvc.chap05.entity.ViewLog;
+import com.study.springstudy.springmvc.chap05.mapper.ReactionMapper;
 import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
 import com.study.springstudy.springmvc.chap05.entity.Reply;
 import com.study.springstudy.springmvc.chap05.mapper.ViewLogMapper;
@@ -30,6 +32,7 @@ public class BoardService {
 
     private final BoardMapper boardMapper;
     private final ViewLogMapper viewLogMapper;
+    private final ReactionMapper reactionMapper;
 
     // 목록 조회 엔터티 -> dto
     public List<BoardListResponseDto> getBoardList(Search page) {
@@ -55,8 +58,21 @@ public class BoardService {
 
         // 로그인 계정명
         String currentUserAccount = LoginUtil.getLoggedInUserAccount(session);
+
+        // 상세조회 시 초기 렌더링에 그려질 데이터
+        BoardDetailResponseDto responseDto = new BoardDetailResponseDto(board);
+        responseDto.setLikeCount(reactionMapper.countLikes(boardNo));
+        responseDto.setDislikeCount(reactionMapper.countDislikes(boardNo));
+
+        Reaction reaction = reactionMapper.findOne(boardNo, currentUserAccount);
+        String type = null;
+        if (reaction != null) {
+            type = reaction.getReactionType().toString();
+        }
+        responseDto.setUserReaction(type);
+
         if (!LoginUtil.isLoggedIn(session) || LoginUtil.isMine(board.getAccount(), currentUserAccount)) {
-            return new BoardDetailResponseDto(board);
+            return responseDto;
         }
 
         // 조회수가 올라가는 조건처리 (쿠키버전)
@@ -95,7 +111,7 @@ public class BoardService {
         if (shouldIncrease) {
             boardMapper.upViewCount(bno);
         }
-        return new BoardDetailResponseDto(board);
+        return responseDto;
 
         // 댓글 목록 조회
 //        List<Reply> replies = replyMapper.findAll(boardNo);
