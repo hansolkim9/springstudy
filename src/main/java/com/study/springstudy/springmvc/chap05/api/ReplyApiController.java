@@ -6,6 +6,7 @@ import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springstudy.springmvc.chap05.dto.response.ReplyDetailDto;
 import com.study.springstudy.springmvc.chap05.dto.response.ReplyListDto;
 import com.study.springstudy.springmvc.chap05.service.ReplyService;
+import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,8 @@ public class ReplyApiController {
     @GetMapping("/{bno}/page/{pageNo}")
     public ResponseEntity<?> list(
             @PathVariable long bno
-            ,@PathVariable int pageNo
+            , @PathVariable int pageNo
+            , HttpSession session
         ) {
 
         if (bno == 0) {
@@ -46,6 +48,7 @@ public class ReplyApiController {
         log.info("/api/v1/replise/{} : GET", bno);
 
         ReplyListDto replies = replyService.getReplies(bno, new Page(pageNo, 5));
+        replies.setLoginUser(LoginUtil.getLoggedInUser(session));
 //        log.debug("first reply : {}", replies.get(0));
 
         return ResponseEntity.ok().body(replies);
