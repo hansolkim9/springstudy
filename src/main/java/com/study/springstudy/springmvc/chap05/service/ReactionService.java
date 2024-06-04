@@ -1,5 +1,6 @@
 package com.study.springstudy.springmvc.chap05.service;
 
+import com.study.springstudy.springmvc.chap05.dto.response.ReactionDto;
 import com.study.springstudy.springmvc.chap05.entity.Reaction;
 import com.study.springstudy.springmvc.chap05.entity.ReactionType;
 import com.study.springstudy.springmvc.chap05.mapper.ReactionMapper;
@@ -13,7 +14,7 @@ public class ReactionService {
     private final ReactionMapper reactionMapper;
 
     // 공통 리액션 DB처리 메서드
-    private void handleReaction(long boardNo, String account, ReactionType newReactionType) {
+    private Reaction handleReaction(long boardNo, String account, ReactionType newReactionType) {
         // 처음 리액션을 한다 -> 좋아요든 싫어요든 INSERT
         // 기존 리액션을 취소한다 -> 기존 리액션을 DELETE
         // 기존 리액션을 변경한다 -> 기존 리액션을 DELETE 후 새로운 리액션을 INSERT
@@ -41,16 +42,37 @@ public class ReactionService {
             // 처음 리액션을 한 경우
             reactionMapper.save(newReaction); // 새 리액션 생성
         }
+
+        // 리액션 한 후 재조회를 통해 DB데이터 상태를 체크
+        return reactionMapper.findOne(boardNo, account);
+
     }
 
     // 좋아요 중간처리
-    public void like(long boardNo, String account) {
-        handleReaction(boardNo, account, ReactionType.LIKE);
+    public ReactionDto like(long boardNo, String account) {
+
+        Reaction reaction = handleReaction(boardNo, account, ReactionType.LIKE);
+
+        return getReactionDto(boardNo, reaction);
+    }
+
+    private ReactionDto getReactionDto(long boardNo, Reaction reaction) {
+        String reactionType = null;
+        if (reaction != null) { // 좋아요, 싫어요를 누른 상태
+            reactionType = reaction.getReactionType().toString();
+        }
+
+        return ReactionDto.builder()
+                .likeCount(reactionMapper.countLikes(boardNo))
+                .dislikeCount(reactionMapper.countDislikes(boardNo))
+                .userReaction(reactionType)
+                .build();
     }
 
     // 싫어요 중간처리
-    public void dislike(long boardNo, String account) {
-        handleReaction(boardNo, account, ReactionType.DISLIKE);
+    public ReactionDto dislike(long boardNo, String account) {
+        Reaction reaction = handleReaction(boardNo, account, ReactionType.DISLIKE);
+        return getReactionDto(boardNo, reaction);
     }
 
 }
