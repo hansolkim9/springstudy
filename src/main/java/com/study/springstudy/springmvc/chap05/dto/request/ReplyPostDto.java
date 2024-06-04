@@ -27,4 +27,5 @@ public class ReplyPostDto {
     @NotNull
     private Long bno; // 원본 글번호
 
+//    private String account;
 }

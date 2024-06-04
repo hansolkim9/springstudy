@@ -163,3 +163,8 @@ button.list-btn {
     background-color: #f44336;
     color: #fff;
 }
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #fff;
+    opacity: 1;
+}

@@ -44,6 +44,7 @@ public class ReplyService {
                 .replyText(dto.getText())
                 .replyWriter(dto.getAuthor())
                 .boardNo(dto.getBno())
+                .account(dto.getAuthor())
                 .build();
 
         boolean flag = replyMapper.save(reply);

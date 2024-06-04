@@ -67,8 +67,8 @@
                                 <div class="form-group">
                                     <label for="newReplyWriter" hidden>댓글 작성자</label>
                                     <input id="newReplyWriter" name="replyWriter" type="text"
-                                           class="form-control" placeholder="작성자 이름"
-                                           style="margin-bottom: 6px;">
+                                           class="form-control" value="${login.nickName}"
+                                           style="margin-bottom: 6px;" readonly>
                                     <button id="replyAddBtn" type="button"
                                             class="btn btn-dark form-control">등록
                                     </button>
