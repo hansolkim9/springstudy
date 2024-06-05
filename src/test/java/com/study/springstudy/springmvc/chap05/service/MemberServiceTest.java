@@ -27,7 +27,7 @@ class MemberServiceTest {
                 .build();
 
         //when
-        boolean flag = memberService.join(dto);
+        boolean flag = memberService.join(dto, null);
 
         //then
         assertTrue(flag);

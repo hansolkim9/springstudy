@@ -37,7 +37,15 @@ public class FileUtil {
             e.printStackTrace();
         }
 
-        return "";
+        // 파일 전체 경로
+        String fullPath = newUploadPath + "/" + newFileName;
+
+        // url-path: /local/2024/06/05/sldfkjaf_dog.png
+        String urlPath = "/local"+fullPath.substring(rootPath.length());
+
+        // 업로드가 완료되면 데이터베이스에 파일의 경로 위치를 저장
+        // ex) /local/2024/06/05/lasjslkfj_dog.jpg
+        return urlPath;
     }
 
     private static String makeDateFormatDirectory(String rootPath) {
